@@ -5,10 +5,21 @@ spring:
   application:
     name: rabbitmq
   rabbitmq:
+    #  单机
     host: 192.168.152.128
     port: 5672
+    #  集群 ip:port,ip:port,ip:port
+    #    addresses:
     username: root
     password: root
+    publisher-confirm-type: correlated  # 开启消息确认机制
+    listener:
+      simple:
+        acknowledge-mode: manual    #  这里是开启手动ack，让程序去控制Mo的消息的重发和删除和转移
+        retry:
+          enabled: true # 开启重试 默认false
+          max-attempts: 3  #  最大重试次数
+          initial-interval: 2000ms  #  重试间隔时间
 
 rabbitmq:
   queue:
